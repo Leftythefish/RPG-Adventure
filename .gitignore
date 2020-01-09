@@ -338,3 +338,29 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/Assets/Animations
+/Assets/Characters/Monsters_for_fightscenes
+/Assets/Characters
+/Assets/Effects
+/Assets/InventorySprites
+/Assets/Items
+/Assets/Prefabs
+/Assets/RandomItemSprites
+/Assets/Scenes
+/Assets/Sound
+/Assets/Standard Assets/CrossPlatformInput
+/Assets/Text
+/Assets/TileMaps
+/Assets/UI
+/Assets/World
+/Assets/XR
+/build01
+/ProjectSettings
+/Library
+/buildtest012
+/build720
+/Temp
+/Assets/TextBox/Text
+*.prefab
+*.controller
+*.mat

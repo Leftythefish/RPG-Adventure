@@ -1,0 +1,37 @@
+
+
+Sorting Layers:
+Pääasiallisesti baggrounding (tilemaps) asemointiin kerroksittain
+--------------------
+Background 
+Maa, vesi, jne
+--------------------
+Middle Background
+Varjot, ground details jne
+--------------------
+PLAYER
+Kaikki minkä taakse pelaajan täytyy visuaalisesti päästä 
+(puut, talot, etc) täytyy olla samalla layerillä 
+-------------------
+Foreground - (PELAAJAN EDESSÄ!)
+Ground details ilman collisionia
+--------------------
+
+
+
+Layers:
+Näihin vaikuttaa useammat scriptit!
+--------------------
+Ground
+-----------
+Environment_Collide
+Ne ympäristön asiat joihin pelaajan pitää törmätä, mutta 
+joiden taakse ei päästä (kivet ym)
+-----------------
+PLAYER
+--------------------
+
+
+Toisinsanoen = pelaajan layerit = player ja player(sorting)
+törmättävien asioiden (puut) layerit = Environment collide ja player(sorting)
+törmättävien asioiden (kivet) layerit = environment collide, middleground(sorting)?
