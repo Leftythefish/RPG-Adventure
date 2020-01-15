@@ -67,8 +67,10 @@ public class Restart : MonoBehaviour
         CaveInstantiation ci = new CaveInstantiation();
         ci.GameOver();
 
+
         Portal.hasTalkedWithOldMan = false;
         Portal.hasAllCrystals = false;
+        RelationShips.homeShroom = 1;
 
         //AudioManager
     }

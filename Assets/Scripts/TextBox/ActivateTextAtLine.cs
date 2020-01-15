@@ -74,17 +74,6 @@ public class ActivateTextAtLine : MonoBehaviour
         {
             isLocked = false;
             Instantiation.houseDoorOpened = true;
-            //ChangeLevel c = GetComponent<ChangeLevel>();
-            //if (c != null)
-            //{
-            //    c.enabled = true;
-            //    Instantiation.houseDoorOpened = true;
-            //}
-
-            //Collider2D k = GetComponent<Collider2D>();
-
-            //OnTriggerExit2D(k);
-            //OnTriggerEnter2D(k);
         }
     }
 
@@ -93,6 +82,24 @@ public class ActivateTextAtLine : MonoBehaviour
         if (gameObject.GetComponent<NPC>() != null)
         {
             theTextBox.npc = gameObject.GetComponent<NPC>();
+
+            //does this npc have a friend?
+            if (theTextBox.npc.hasFriend == true)
+            {
+                //answer is different if relationship with friend is good or bad. otherwise default answer.
+                int status = RelationShips.GetRelationShip(theTextBox.npc.friendsName);
+
+                if (status <1)
+                {
+                    startLine = theTextBox.npc.angryLine;
+                    endLine = theTextBox.npc.angryLine;
+                }
+                else if (status >1)
+                {
+                    startLine = theTextBox.npc.happyLine;
+                    endLine = theTextBox.npc.happyLine;
+                }
+            }
         }
 
         if (collision.CompareTag("Player"))
@@ -104,6 +111,12 @@ public class ActivateTextAtLine : MonoBehaviour
             }
 
             theTextBox.ReloadScript(theText);
+
+            if (gameObject.name == "WarningTrigger" && SceneController.currentScene == "Thebeach" && !Portal.hasTalkedWithOldMan)
+            {
+                startLine = 20;
+                endLine = 21;
+            }
 
             if (randomLine)
             {
@@ -131,7 +144,8 @@ public class ActivateTextAtLine : MonoBehaviour
             {
                 Forest1Instantiation.warningShownCave = true;
             }
-            if (gameObject.name == "WarningTrigger" && SceneController.currentScene == "Thebeach")
+
+            if (gameObject.name == "WarningTrigger" && SceneController.currentScene == "Thebeach" && Portal.hasTalkedWithOldMan)
             {
                 theTextBox.ship = true;
             }

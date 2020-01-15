@@ -18,7 +18,7 @@ public class Chest : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))//scene loads only if player runs into the portal
+        if (collision.CompareTag("Player"))
         {
             theTextBox = FindObjectOfType<TextBoxManager>();
 

@@ -17,9 +17,7 @@ public class BattleStarter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         betweenBattleCounter = Random.Range(timeBetweenBattles * 0.5f, timeBetweenBattles * 1.5f);
-
     }
 
     // Update is called once per frame
@@ -71,7 +69,7 @@ public class BattleStarter : MonoBehaviour
     public IEnumerator StartBattleCo() //add fade in to battle
     {
         int selectedBattle = Random.Range(0, potentialBattles.Length);
-        //UIfade.instamce.FadeToBlack();
+        //UIfade.instance.FadeToBlack();
         GameManager.instance.battleActive = true;
 
         yield return new WaitForSeconds(.000001f);

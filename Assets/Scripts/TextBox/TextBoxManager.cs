@@ -70,6 +70,7 @@ public class TextBoxManager : MonoBehaviour
         {
             DisableTextBox();
         }
+
         InfoToMaintain.startGameText = false;
     }
 
@@ -86,15 +87,15 @@ public class TextBoxManager : MonoBehaviour
         {
             theText.text = textLines[currentLine];
 
-            if (!openingLock && Input.GetKeyDown(KeyCode.Return))
+            if (!openingLock && Input.anyKeyDown)
             {
                 currentLine += 1;
             }
 
-            if (openingLock && Input.GetKeyDown(KeyCode.Return))
+            if (openingLock && Input.anyKeyDown)
             {
                 currentLine = 4;
-                endAtLine = 5;
+                endAtLine = 4;
                 openingLock = false;
 
                 item.RemoveFromInventory();
@@ -146,6 +147,7 @@ public class TextBoxManager : MonoBehaviour
         {
             NameBox.SetActive(false);
         }
+
         if (npc != null && npc.hasInteraction != false)
         {
             isInteracting = true;
@@ -241,6 +243,7 @@ public class TextBoxManager : MonoBehaviour
                     {
                         theText.text = npc.npcDialogueLines[npc.itemGiven];
                         npc.item = null;
+                        HomeInstantiation.potionGiven = true;
                     }
                     else
                     {
@@ -255,6 +258,18 @@ public class TextBoxManager : MonoBehaviour
             else
             {
                 theText.text = npc.npcDialogueLines[selectedline];
+            }
+
+            if (npc.hasRelationship)
+            {
+                if (selectedline == npc.badAnswer)
+                {
+                    RelationShips.UpdateRelationShip(-1);
+                }
+                else if (selectedline == npc.goodAnswer)
+                {
+                    RelationShips.UpdateRelationShip(1);
+                }
             }
 
             selectedline = 0;

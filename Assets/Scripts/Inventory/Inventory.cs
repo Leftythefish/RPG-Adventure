@@ -81,6 +81,21 @@ public class Inventory : MonoBehaviour
         return false;
     }
 
+    public bool SearchForFishingRod()
+    {
+        Item rod = (from i in items
+                  where i.name == "Fishing Rod"
+                  select i).FirstOrDefault();
+
+        if (rod!=null)
+        {
+            return true;
+        }
+
+        return false;
+
+    }
+
     public void GameOver()
     {
         items = null;

@@ -14,7 +14,7 @@ public class InventorySlot : MonoBehaviour
         icon.sprite = item.icon;
         icon.enabled = true;
 
-        if (item.name == "Key" || item.name == "Crystal Fragment")
+        if (item.name == "Key" || item.name == "Crystal Fragment" || item.name == "Fishing Rod")
         {
             removeButton.interactable = false;
         }

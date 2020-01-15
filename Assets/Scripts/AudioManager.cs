@@ -7,7 +7,6 @@ public class AudioManager : MonoBehaviour
     public AudioSource[] sfx;
     public AudioSource[] music;
     public static AudioManager instance;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -55,9 +54,24 @@ public class AudioManager : MonoBehaviour
             music[i].Stop();
         }
     }
+    public void PlayMusic()
+    {
+        for (int i = 0; i < music.Length; i++)
+        {
+            music[i].Play();
+        }
+    }
 
     public void Destroy()
     {
         Destroy(this.gameObject);
+    }
+    public void AudioOff()
+    {
+        AudioListener.pause = true;
+    }
+    public void AudioOn()
+    {
+        AudioListener.pause = false;
     }
 }

@@ -5,41 +5,31 @@ using UnityEngine.SceneManagement;
 using Cinemachine;
 public class BattleManager : MonoBehaviour
 {
+    public static BattleManager instance;
     public InventoryUI inventoryUI;
 
-    public static BattleManager instance;
-
-    private bool battleActive; //keep track if battle active or not
-
     public GameObject BattleScene;  //control if scene is on or off, create reference for that
-
+    public GameObject Camera;
+    public GameObject uiButtonsHolder;
+    public GameObject enemyAttackEffect;
+    public DamageNumber damageNumber;
+    public GameObject targetMenu;
+    public BattleTargetButtons[] targetButtons;
+    public GameObject magicMenu;
+    public BattleMagicSelect[] magicButtons;
+    public BattleMove[] movesList;
     public Transform[] playerPositions;//reference to all the positions we want to our player appear
     public Transform[] enemyPositions;//reference to all the positions we want to our enemies appear
-
     //when battle starts it puts the playerprefabs(players) to playerpositions and same on enemies.
     public BattleChar[] playerPrefabs;//create array of our battlechar. grab players, put em in player positions
     public BattleChar[] enemyPrefabs; //grab enemies, put em in enemy positions
 
     public List<BattleChar> activeBattlers = new List<BattleChar>();
 
+    private bool battleActive; //keep track if battle active or not
     public int currentTurn;//we need current number of our turn, cycles trough active battlers.
     public bool turnWaiting;//waiting for our turn to end, input from player, enemy to do move.
-
-    public GameObject uiButtonsHolder;
-
-    public BattleMove[] movesList;
-    public GameObject enemyAttackEffect;
-
-    public DamageNumber damageNumber;
-
-    public GameObject targetMenu;
-    public BattleTargetButtons[] targetButtons;
-
-    public GameObject magicMenu;
-    public GameObject Camera;
-    public BattleMagicSelect[] magicButtons;
-    //public Camera camera;
-
+    
     public string npcName;
 
     void Start()
@@ -60,12 +50,6 @@ public class BattleManager : MonoBehaviour
     {
         if (battleActive)
         {
-            Player.instance.MuteWalk();
-            AudioManager.instance.PlayMusic(4);
-            StartCoroutine(FadeAudio.StartFade(AudioManager.instance.music[4], 0.0001f, 0f)); //fade out battle music
-            StartCoroutine(FadeAudio.StartFade(AudioManager.instance.music[4], 5, 0.2f)); //fade in battle music
-            Camera.SetActive(true);
-
             if (turnWaiting)
             {
                 // if it is players turn,
@@ -76,7 +60,6 @@ public class BattleManager : MonoBehaviour
                 }
                 else
                 {
-                    //hide buttons if turn is not players
                     uiButtonsHolder.SetActive(false);
                     //We call Coroutine EnemyMoveCo() where enemy attacks
                     StartCoroutine(EnemyMoveCo());
@@ -88,10 +71,12 @@ public class BattleManager : MonoBehaviour
     //start battle   //this needs the name of enemies we want to spawn in battle.
     public void BattleStart(string[] enemiesToSpawn)
     {
-
         if (!battleActive)
         {
             Player.instance.OffRunSpeed();
+            Player.instance.MuteWalk();
+            AudioManager.instance.PlayMusic(4);
+            StartCoroutine(FadeAudio.StartFade(AudioManager.instance.music[4], 3, 0.2f)); //fade in battle music
             //activating battlescene camera
             Camera.SetActive(true);
             //setting battleactive boolean true
@@ -162,12 +147,14 @@ public class BattleManager : MonoBehaviour
 
         for (int i = 0; i < activeBattlers.Count; i++)
         {
-            if (activeBattlers[i].currentHp < 0)
+            //if (activeBattlers[i].currentHp < 0)
+            //{
+            //    activeBattlers[i].currentHp = 0;
+            //}
+            if (activeBattlers[i].currentHp <= 0)
             {
                 activeBattlers[i].currentHp = 0;
-            }
-            if (activeBattlers[i].currentHp == 0)
-            {
+
                 if (activeBattlers[i].isPlayer)
                 {
                     activeBattlers[i].theSprite.sprite = activeBattlers[i].deadSprite;
@@ -194,14 +181,14 @@ public class BattleManager : MonoBehaviour
         }
         if (allEnemiesDead || playerDead) // if either ones are dead, end battle
         {
-            if (allEnemiesDead)
-            {
+            //if (allEnemiesDead)
+            //{
+            //    StartCoroutine(EndBattleCo());
+            //}
+            //else
+            //{
                 StartCoroutine(EndBattleCo());
-            }
-            else
-            {
-                StartCoroutine(EndBattleCo());
-            }
+            //}
         }
         else
         {
@@ -219,14 +206,12 @@ public class BattleManager : MonoBehaviour
     //adds delay to enemy attacks
     public IEnumerator EnemyMoveCo()
     {
-        //we are not waiting turn to be happen yet
         turnWaiting = false;
         //me will wait
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
         EnemyAttack();
         yield return new WaitForSeconds(1f);
         NextTurn();
-
     }
     //function for enemy attacking
     public void EnemyAttack()
@@ -305,7 +290,6 @@ public class BattleManager : MonoBehaviour
                 targetButtons[i].moveName = moveName;
                 targetButtons[i].activeBattleTarget = Enemies[i];
                 targetButtons[i].targetName.text = activeBattlers[Enemies[i]].charName;
-
             }
             else
             {
@@ -347,15 +331,18 @@ public class BattleManager : MonoBehaviour
         targetMenu.SetActive(false);
         magicMenu.SetActive(false);
         battleActive = false;
+
         //fade battlemusic out
-        StartCoroutine(FadeAudio.StartFade(AudioManager.instance.music[4], 5, 0));
-        yield return new WaitForSeconds(2f);
-        //find music from worldcontroller
+        StartCoroutine(FadeAudio.StartFade(AudioManager.instance.music[4], 3f, 0f));
+        yield return new WaitForSeconds(3f);
+
+        //find music from worldcontroller and fade in
         int sceneMusic = FindObjectOfType<WorldController>().musicToPlay;
         AudioManager.instance.PlayMusic(sceneMusic);
-        StartCoroutine(FadeAudio.StartFade(AudioManager.instance.music[sceneMusic], 0.0001f, 0f));
+        AudioManager.instance.music[sceneMusic].volume = 0f;
+        StartCoroutine(FadeAudio.StartFade(AudioManager.instance.music[sceneMusic], 3, 0.2f));
         Player.instance.UnMuteWalk();
-        StartCoroutine(FadeAudio.StartFade(AudioManager.instance.music[sceneMusic], 5, 0.2f));
+
         for (int i = 0; i < activeBattlers.Count; i++)
         {
             if (activeBattlers[i].isPlayer)

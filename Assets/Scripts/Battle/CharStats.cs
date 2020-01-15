@@ -8,8 +8,6 @@ public class CharStats : MonoBehaviour
 
     public Player player;
 
-    //public Stat stat;
-
     //add some default variables, used thorought game
     public string charName;
     public int playerLevel = 1;
@@ -32,28 +30,12 @@ public class CharStats : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
-        //stat.MyMaxValue = maxHp;
-        //player.setHealth(currentHp);
-
         player = Player.instance;
-        //player = FindObjectOfType<Player>();
-        //stat = FindObjectOfType<Stat>();
-
         maxHp = player.maxHealth;
-        //Player.instance.maxHealth = maxHp;
-
         currentHp = player.currentHealth;
-        //Player.instance.setHealth(currentHp);
-
-        //        MyMaxValue { get; set; }
-        //public float MyCurrentValue
-
-        //set maxlevel, in this case it is 100
         expToNextLevel = new int[maxLevel];
         //how much xp should happen to get level up
         expToNextLevel[1] = baseEXP; // first level = 1000xp
-
         //make for loop to set how much xp player needs to get to level up to next level
         //building experience list
         for (int i = 2; i < expToNextLevel.Length; i++) // set it to 2, because element 0 and 1 are already created on our expToNextLevel
@@ -62,16 +44,9 @@ public class CharStats : MonoBehaviour
             expToNextLevel[i] = Mathf.FloorToInt(expToNextLevel[i - 1] * 1.05f); //chops off the decimals.//easily goes to overflow, minus values if you multiply too much
         }
     }
-
-    // Update is called once per frame
+    #region Xp calculator.
     void Update()
     {
-        //stat = FindObjectOfType<Stat>();
-
-        //Player.instance.maxHealth = maxHp;
-        //player.setHealth(currentHp);
-        //testing leveling up system
-
         if (Input.GetKeyDown(KeyCode.K))
         {
             AddExp(1000);
@@ -118,4 +93,5 @@ public class CharStats : MonoBehaviour
             currentEXP = 0;
         }
     }
+    #endregion
 }
