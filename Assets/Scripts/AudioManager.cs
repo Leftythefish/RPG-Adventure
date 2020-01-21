@@ -1,18 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
     public AudioSource[] sfx;
     public AudioSource[] music;
     public static AudioManager instance;
+    //public AudioMixer masterMixer;
+    public AudioMixerGroup master;
+
+
     // Start is called before the first frame update
     void Start()
     {
         if (instance != null)
         {
-            Debug.LogWarning("More than one instance of Audiomanager found!");
             Destroy(this);
             return;
         }
@@ -68,10 +72,13 @@ public class AudioManager : MonoBehaviour
     }
     public void AudioOff()
     {
-        AudioListener.pause = true;
+        master.audioMixer.SetFloat("musicVolume", -80f);
+        master.audioMixer.SetFloat("sfxVolume", -80f);
     }
     public void AudioOn()
     {
-        AudioListener.pause = false;
+        master.audioMixer.SetFloat("musicVolume", 0f);
+        master.audioMixer.SetFloat("sfxVolume", 0f);
     }
+
 }

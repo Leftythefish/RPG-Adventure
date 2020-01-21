@@ -40,44 +40,47 @@ public class ShedInstantiation : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //if (key != null && keyPicked == false)
-        //{
-        //    Instantiate(key, new Vector3(keyX, keyY), Quaternion.identity);
-        //}
-        //if (healthPotion != null && healthPicked == false)
-        //{
-        //    Instantiate(healthPotion, new Vector3(healthX, healthY), Quaternion.identity);
-        //}
-        //if (speedPotion != null && speedPicked == false)
-        //{
-        //    Instantiate(speedPotion, new Vector3(speedX, speedY), Quaternion.identity);
-        //}
-        //if (poisonPotion != null && poisonPicked == false)
-        //{
-        //    Instantiate(poisonPotion, new Vector3(poisonX, poisonY), Quaternion.identity);
-        //}
-        if (ogre != null && ogredefeated == false)
+        if (SceneController.currentScene == "Shed")
         {
-            Instantiate(ogre, new Vector3(ogreX, ogreY, ogreZ), Quaternion.identity);
-        }
+            //if (key != null && keyPicked == false)
+            //{
+            //    Instantiate(key, new Vector3(keyX, keyY), Quaternion.identity);
+            //}
+            //if (healthPotion != null && healthPicked == false)
+            //{
+            //    Instantiate(healthPotion, new Vector3(healthX, healthY), Quaternion.identity);
+            //}
+            //if (speedPotion != null && speedPicked == false)
+            //{
+            //    Instantiate(speedPotion, new Vector3(speedX, speedY), Quaternion.identity);
+            //}
+            //if (poisonPotion != null && poisonPicked == false)
+            //{
+            //    Instantiate(poisonPotion, new Vector3(poisonX, poisonY), Quaternion.identity);
+            //}
+            if (ogre != null && ogredefeated == false)
+            {
+                Instantiate(ogre, new Vector3(ogreX, ogreY, ogreZ), Quaternion.identity);
+            }
 
-        if (chest1 != null)
-        {
-            if (chest1Opened)
+            if (chest1 != null)
             {
-                Chest c = chest1.gameObject.GetComponent<Chest>();
-                c.items = null;
+                if (chest1Opened)
+                {
+                    Chest c = chest1.gameObject.GetComponent<Chest>();
+                    c.items = null;
+                }
+                Instantiate(chest1, new Vector3(chest1X, chest1Y), Quaternion.identity);
             }
-            Instantiate(chest1, new Vector3(chest1X, chest1Y), Quaternion.identity);
-        }
-        if (chest2 != null)
-        {
-            if (chest2Opened)
+            if (chest2 != null)
             {
-                Chest c = chest2.gameObject.GetComponent<Chest>();
-                c.items = null;
+                if (chest2Opened)
+                {
+                    Chest c = chest2.gameObject.GetComponent<Chest>();
+                    c.items = null;
+                }
+                Instantiate(chest2, new Vector3(chest2X, chest2Y), Quaternion.identity);
             }
-            Instantiate(chest2, new Vector3(chest2X, chest2Y), Quaternion.identity);
         }
     }
 

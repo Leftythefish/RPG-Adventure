@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class FishingPlace : MonoBehaviour
 {
-    //// Start is called before the first frame update
-    //void Start()
-    //{
-    //}
     public TextBoxManager theTextBox;
     public TextAsset fishingAreaText;
     public int noRodLine;
@@ -15,13 +11,20 @@ public class FishingPlace : MonoBehaviour
 
     private bool canFish;
 
+    public List<Item> items;
+
+    public int foundSomethingLine;
+    public int noCatchLine;
+
+    public int noSpaceLine;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
             theTextBox = FindObjectOfType<TextBoxManager>();
             theTextBox.ReloadScript(fishingAreaText);
-            
+
             canFish = Inventory.instance.SearchForFishingRod();
             if (canFish)
             {
@@ -34,7 +37,7 @@ public class FishingPlace : MonoBehaviour
             else
             {
                 theTextBox.currentLine = noRodLine;
-                theTextBox.endAtLine = noRodLine+1;
+                theTextBox.endAtLine = noRodLine + 1;
                 theTextBox.EnableTextBox();
             }
         }
@@ -48,9 +51,33 @@ public class FishingPlace : MonoBehaviour
         }
     }
 
-    //    // Update is called once per frame
-    //    void Update()
-    //{
+    public void Catch()
+    {
+        int catchIndex = Random.Range(0, 6);
 
-    //}
+        if (catchIndex < 3)
+        {
+            bool hasSpace = Inventory.instance.Add(items[catchIndex]);
+
+            if (hasSpace)
+            {
+                theTextBox.currentLine = foundSomethingLine;
+                theTextBox.endAtLine = foundSomethingLine;
+            }
+            else
+            {
+                theTextBox.currentLine = noSpaceLine;
+                theTextBox.endAtLine = noSpaceLine;
+            }
+        }
+
+        else
+        {
+            theTextBox.currentLine = noCatchLine;
+            theTextBox.endAtLine = noCatchLine;
+        }
+
+        theTextBox.fishing = false;
+        theTextBox.EnableTextBox();
+    }
 }

@@ -11,9 +11,15 @@ public class Potion : Item
     public float speedModifier;
     public float effectTime;
 
+    public AudioManager audioManager;
+    public int soundToPlay;
+
     public override void Use()
     {
         player = FindObjectOfType<Player>();
+
+        audioManager = FindObjectOfType<AudioManager>();
+        audioManager.PlaySFX(soundToPlay);
 
         switch (effect)
         {

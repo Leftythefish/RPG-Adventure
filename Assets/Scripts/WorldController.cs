@@ -103,47 +103,86 @@ public class WorldController : SceneController
                 break;
 
             case "TheTown_01":
-                if (currentScene == "Theforest_01")
+                switch (currentScene)
                 {
-                    player.position = new Vector2(42.2f, -9.6f);
-
-                }
-                else if (currentScene == "Theforest_02")
-                {
-                    player.position = new Vector2(41f, 5.4f);
-                }
-                else if (currentScene == "Win")
-                {
-                    player.position = new Vector2(10.52f, 3.43f);
-                }
-                else if (currentScene == "Death")
-                {
-                    player.position = new Vector2(11.09f, 2.12f);
+                    case "Theforest_01":
+                        player.position = new Vector2(42.2f, -9.6f);
+                        break;
+                    case "Theforest_02":
+                        player.position = new Vector2(41f, 5.4f);
+                        break;
+                    case "Win":
+                        player.position = new Vector2(10.52f, 3.43f);
+                        break;
+                    case "Death":
+                        player.position = new Vector2(11.09f, 2.12f);
+                        break;
                 }
                 break;
+            #region ifelse thetown01
+            //if (currentScene == "Theforest_01")
+            //    {
+            //        player.position = new Vector2(42.2f, -9.6f);
+            //    }
+            //    else if (currentScene == "Theforest_02")
+            //    {
+            //        player.position = new Vector2(41f, 5.4f);
+            //    }
+            //    else if (currentScene == "Win")
+            //    {
+            //        player.position = new Vector2(10.52f, 3.43f);
+            //    }
+            //    else if (currentScene == "Death")
+            //    {
+            //        player.position = new Vector2(11.09f, 2.12f);
+            //    }
+            #endregion
+
+
             case "Theforest_02":
-                if (currentScene == "Theforest_01")
+                switch (currentScene)
                 {
-                    player.position = new Vector2(5f, -10f);
-
-                }
-                else if (currentScene == "Thebeach")
-                {
-                    player.position = new Vector2(10f, 22f);
-                }
-                else if (currentScene == "TheTown_01")
-                {
-                    player.position = new Vector2(-14f, 0f);
-                }
-                else if (currentScene == "Win")
-                {
-                    player.position = new Vector2(10.52f, 3.43f);
-                }
-                else if (currentScene == "Death")
-                {
-                    player.position = new Vector2(11.09f, 2.12f);
+                    case "Theforest_01":
+                        player.position = new Vector2(5f, -10f);
+                        break;
+                    case "Thebeach":
+                        player.position = new Vector2(10f, 22f);
+                        break;
+                    case "TheTown_01":
+                        player.position = new Vector2(-14f, 0f);
+                        break;
+                    case "Win":
+                        player.position = new Vector2(10.52f, 3.43f);
+                        break;
+                    case "Death":
+                        player.position = new Vector2(11.09f, 2.12f);
+                        break;
                 }
                 break;
+            #region If Else forest 2
+            //if (currentScene == "Theforest_01")
+            //{
+            //    player.position = new Vector2(5f, -10f);
+
+            //}
+            //else if (currentScene == "Thebeach")
+            //{
+            //    player.position = new Vector2(10f, 22f);
+            //}
+            //else if (currentScene == "TheTown_01")
+            //{
+            //    player.position = new Vector2(-14f, 0f);
+            //}
+            //else if (currentScene == "Win")
+            //{
+            //    player.position = new Vector2(10.52f, 3.43f);
+            //}
+            //else if (currentScene == "Death")
+            //{
+            //    player.position = new Vector2(11.09f, 2.12f);
+            //}
+            //break;
+            #endregion
             case "Shed":
                 switch (currentScene)
                 {
@@ -165,7 +204,7 @@ public class WorldController : SceneController
 
     public void Update()
     {
-        if (!musicStarted)
+        if (!musicStarted && AudioManager.instance != null)
         {
             musicStarted = true;
             AudioManager.instance.PlayMusic(musicToPlay);

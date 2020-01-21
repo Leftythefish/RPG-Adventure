@@ -17,7 +17,6 @@ public class InventoryUI : MonoBehaviour
     {
         if (instance != null)
         {
-            Debug.LogWarning("More than one instance of InventoryUI found!");
             Destroy(this);
             return;
         }
@@ -56,17 +55,6 @@ public class InventoryUI : MonoBehaviour
     public void SetActive()
     {
         inventoryUI.SetActive(!inventoryUI.activeSelf);
-
-        if (inventoryUI.activeSelf == true)
-        {
-            Player.instance.canMove = false;
-            //player.canMove = false;
-        }
-        else
-        {
-            Player.instance.canMove = true;
-            //player.canMove = true;
-        }
     }
 
     void UpdateUI()

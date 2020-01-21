@@ -17,7 +17,6 @@ public class UIMaster : MonoBehaviour
     {
         if (instance != null)
         {
-            Debug.LogWarning("More than one instance of UIMaster found!");
             Destroy(this);
             return;
         }

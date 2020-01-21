@@ -76,12 +76,10 @@ public class BattleStarter : MonoBehaviour
 
         //NPC npc = FindObjectOfType<NPC>();
         BattleManager.instance.npcName = npcName;
-
         BattleManager.instance.BattleStart(potentialBattles[selectedBattle].enemies);
 
         if (deactivateAfterStarting)
         {
-
             gameObject.SetActive(false);
         }
 

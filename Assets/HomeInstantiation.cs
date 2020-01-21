@@ -29,30 +29,33 @@ public class HomeInstantiation : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //if (healthPotion != null && healthPicked == false)
-        //{
-        //    Instantiate(healthPotion, new Vector3(healthX, healthY), Quaternion.identity);
-        //}
-        //if (poisonPotion != null && poisonPicked == false)
-        //{
-        //    Instantiate(poisonPotion, new Vector3(poisonX, poisonY), Quaternion.identity);
-        //}
-        if (chest != null)
+        if (SceneController.currentScene == "Home")
         {
-            if (chestOpened)
+            //if (healthPotion != null && healthPicked == false)
+            //{
+            //    Instantiate(healthPotion, new Vector3(healthX, healthY), Quaternion.identity);
+            //}
+            //if (poisonPotion != null && poisonPicked == false)
+            //{
+            //    Instantiate(poisonPotion, new Vector3(poisonX, poisonY), Quaternion.identity);
+            //}
+            if (chest != null)
             {
-                Chest c = chest.gameObject.GetComponent<Chest>();
-                c.items = null;
+                if (chestOpened)
+                {
+                    Chest c = chest.gameObject.GetComponent<Chest>();
+                    c.items = null;
+                }
+                Instantiate(chest, new Vector3(chestX, chestY), Quaternion.identity);
             }
-            Instantiate(chest, new Vector3(chestX, chestY), Quaternion.identity);
-        }
 
-        if (potionGiven)
-        {
-            NPC npc = angryShroom.GetComponent<NPC>();
-            npc.item = null;
+            if (potionGiven)
+            {
+                NPC npc = angryShroom.GetComponent<NPC>();
+                npc.item = null;
+            }
+            Instantiate(angryShroom, new Vector3(shroomX, shroomY, shroomZ), Quaternion.identity);
         }
-        Instantiate(angryShroom, new Vector3(shroomX, shroomY, shroomZ), Quaternion.identity);
     }
 
     public void GameOver()

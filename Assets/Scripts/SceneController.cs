@@ -17,6 +17,7 @@ public class SceneController : MonoBehaviour
     public void LoadScene(string sceneName)
     {
         prevScene = currentScene;
+        currentScene = sceneName;
         SceneManager.LoadScene(sceneName);
     }
 

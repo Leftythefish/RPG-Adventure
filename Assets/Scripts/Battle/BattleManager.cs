@@ -26,14 +26,22 @@ public class BattleManager : MonoBehaviour
 
     public List<BattleChar> activeBattlers = new List<BattleChar>();
 
-    private bool battleActive; //keep track if battle active or not
+    public bool battleActive; //keep track if battle active or not
     public int currentTurn;//we need current number of our turn, cycles trough active battlers.
     public bool turnWaiting;//waiting for our turn to end, input from player, enemy to do move.
-    
+
+    bool playerDead = false;
+
     public string npcName;
+
+    GameObject obj;
+
+    //GameObject restart;
+
 
     void Start()
     {
+
         if (instance == null)
         {
             instance = this;
@@ -43,15 +51,38 @@ public class BattleManager : MonoBehaviour
             Destroy(gameObject);
         }
         DontDestroyOnLoad(gameObject);
+
+        obj = this.gameObject;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Player.instance.currentHealth <= 0)
+        {
+            StartCoroutine(EndBattleCo2());
+            return;
+        }
         if (battleActive)
         {
             if (turnWaiting)
             {
+                //put players in scene. Only 1 player here
+                for (int i = 0; i < playerPositions.Length; i++)
+                {
+                    //Put players in right positions on the battle
+                    if (GameManager.instance.playerStats[i].gameObject.activeInHierarchy)
+                    {
+                        // find player
+                        for (int j = 0; j < playerPrefabs.Length; j++)
+                        {
+                            //add Stats for player in battle. Health, Strength, Defence, etc.
+                            if (playerPrefabs[j].charName == GameManager.instance.playerStats[i].charName)
+                                activeBattlers[i].currentHp = Player.instance.currentHealth;
+                            activeBattlers[i].maxHp = Player.instance.maxHealth;
+                        }
+                    }
+                }
                 // if it is players turn,
                 if (activeBattlers[currentTurn].isPlayer)
                 {
@@ -73,11 +104,12 @@ public class BattleManager : MonoBehaviour
     {
         if (!battleActive)
         {
+            //UIFade.instance.FadeToBlack();
             Player.instance.OffRunSpeed();
             Player.instance.MuteWalk();
             AudioManager.instance.PlayMusic(4);
             StartCoroutine(FadeAudio.StartFade(AudioManager.instance.music[4], 3, 0.2f)); //fade in battle music
-            //activating battlescene camera
+                                                                                          //activating battlescene camera
             Camera.SetActive(true);
             //setting battleactive boolean true
             battleActive = true;
@@ -109,6 +141,9 @@ public class BattleManager : MonoBehaviour
                         }
                     }
                 }
+                //UIFade.instance.FadeFromBlack();
+
+
             }
             //Spawn enemies to battlefield and on the right places.
             for (int i = 0; i < enemiesToSpawn.Length; i++)
@@ -132,6 +167,7 @@ public class BattleManager : MonoBehaviour
     }
     public void NextTurn()
     {
+
         currentTurn++;
         if (currentTurn >= activeBattlers.Count)
         {
@@ -142,19 +178,16 @@ public class BattleManager : MonoBehaviour
     }
     public void UpdateBattle() // check dead enemies, dead players
     {
+  
+
         bool allEnemiesDead = true;
-        bool playerDead = true;
+        playerDead = true;
 
         for (int i = 0; i < activeBattlers.Count; i++)
         {
-            //if (activeBattlers[i].currentHp < 0)
-            //{
-            //    activeBattlers[i].currentHp = 0;
-            //}
-            if (activeBattlers[i].currentHp <= 0)
+            if (activeBattlers[i].currentHp < 0 || activeBattlers[i].currentHp == 0)
             {
                 activeBattlers[i].currentHp = 0;
-
                 if (activeBattlers[i].isPlayer)
                 {
                     activeBattlers[i].theSprite.sprite = activeBattlers[i].deadSprite;
@@ -165,13 +198,13 @@ public class BattleManager : MonoBehaviour
                     activeBattlers[i].EnemyFade();
                 }
             }
+
             else
             {
                 if (activeBattlers[i].isPlayer)
                 {
                     playerDead = false;
                     activeBattlers[i].theSprite.sprite = activeBattlers[i].aliveSprite;
-
                 }
                 else
                 {
@@ -181,14 +214,7 @@ public class BattleManager : MonoBehaviour
         }
         if (allEnemiesDead || playerDead) // if either ones are dead, end battle
         {
-            //if (allEnemiesDead)
-            //{
-            //    StartCoroutine(EndBattleCo());
-            //}
-            //else
-            //{
-                StartCoroutine(EndBattleCo());
-            //}
+            StartCoroutine(EndBattleCo());
         }
         else
         {
@@ -210,34 +236,43 @@ public class BattleManager : MonoBehaviour
         //me will wait
         yield return new WaitForSeconds(1.5f);
         EnemyAttack();
-        yield return new WaitForSeconds(1f);
+        if (!playerDead)
+        {
+            yield return new WaitForSeconds(1f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.4f);
+        }
         NextTurn();
     }
     //function for enemy attacking
     public void EnemyAttack()
     {
-        List<int> players = new List<int>();
-        for (int i = 0; i < activeBattlers.Count; i++)
+        if (battleActive)
         {
-            if (activeBattlers[i].isPlayer && activeBattlers[i].currentHp > 0) // Check if in the activeplayers position i is player and his/her Hp is not zero
+            List<int> players = new List<int>();
+            for (int i = 0; i < activeBattlers.Count; i++)
             {
-                players.Add(i);
+                if (activeBattlers[i].isPlayer && activeBattlers[i].currentHp > 0) // Check if in the activeplayers position i is player and his/her Hp is not zero
+                {
+                    players.Add(i);
+                }
             }
-        }
-        int selectedTarget = players[Random.Range(0, players.Count)]; // select player position randomly. we got only 1 player so ... not needed here
-        int selectAttack = Random.Range(0, activeBattlers[currentTurn].movesAvailable.Length); //randomly select attack from attack list
-        int movePower = 0;
-        for (int i = 0; i < movesList.Length; i++)
-        {
-            if (movesList[i].moveName == activeBattlers[currentTurn].movesAvailable[selectAttack])
+            int selectedTarget = players[Random.Range(0, players.Count)]; // select player position randomly. we got only 1 player so ... not needed here
+            int selectAttack = Random.Range(0, activeBattlers[currentTurn].movesAvailable.Length); //randomly select attack from attack list
+            int movePower = 0;
+            for (int i = 0; i < movesList.Length; i++)
             {
-                Instantiate(movesList[i].theEffect, activeBattlers[0].transform.position, activeBattlers[0].transform.rotation);
-                movePower = movesList[i].movePower;
+                if (movesList[i].moveName == activeBattlers[currentTurn].movesAvailable[selectAttack])
+                {
+                    Instantiate(movesList[i].theEffect, activeBattlers[0].transform.position, activeBattlers[0].transform.rotation);
+                    movePower = movesList[i].movePower;
+                }
             }
+            Instantiate(enemyAttackEffect, activeBattlers[currentTurn].transform.position, activeBattlers[selectedTarget].transform.rotation);
+            DealDamage(selectedTarget, movePower);
         }
-        Instantiate(enemyAttackEffect, activeBattlers[currentTurn].transform.position, activeBattlers[selectedTarget].transform.rotation);
-        DealDamage(selectedTarget, movePower);
-
     }
     public void DealDamage(int target, int movePower)
     {
@@ -246,12 +281,26 @@ public class BattleManager : MonoBehaviour
         float damageCalc = (atkPwr / defPwr) * movePower * Random.Range(0.9f, 1.1f);
         float damageToGive = Mathf.Round(damageCalc);
         activeBattlers[target].currentHp -= damageToGive;
+       
         if (activeBattlers[target].isPlayer)
         {
-            Player.instance.TakeDamage(damageToGive);
+            if (Player.instance.currentHealth - damageToGive <= 0)
+            {
+                StartCoroutine(EndBattleCo());
+                Player.instance.TakeDamage(damageToGive);
+            }
+            else
+            {
+                Player.instance.TakeDamage(damageToGive);
+            }
         }
 
         Instantiate(damageNumber, activeBattlers[target].transform.position, activeBattlers[target].transform.rotation).SetDamage(damageToGive);
+        
+        if (Player.instance.currentHealth <= 0)
+        {
+            playerDead = true;
+        }
     }
     public void PlayerAttack(string moveName, int selectedTarget)       //PLayer attacks roar
     {
@@ -327,21 +376,40 @@ public class BattleManager : MonoBehaviour
     }
     public IEnumerator EndBattleCo()
     {
+        //this makes the sound fade twice when going back to scene - which is not desireable
+        //yield return new WaitForSeconds(1f);
+
         uiButtonsHolder.SetActive(false);
         targetMenu.SetActive(false);
         magicMenu.SetActive(false);
         battleActive = false;
 
-        //fade battlemusic out
-        StartCoroutine(FadeAudio.StartFade(AudioManager.instance.music[4], 3f, 0f));
-        yield return new WaitForSeconds(3f);
+        ////not needed, enemies get destroyed when they die
+        //for (int i = 0; i < activeBattlers.Count; i++)
+        //{
+        //    if (!activeBattlers[i].isPlayer)
+        //    {
+        //        //for (int j = 0; j < GameManager.instance.playerStats.Length; j++)
+        //        //{
+        //        //    if (activeBattlers[i].charName == GameManager.instance.playerStats[i].charName)
+        //        //    {
+        //        //        GameManager.instance.playerStats[j].currentHp = activeBattlers[i].currentHp;
+        //        //        GameManager.instance.playerStats[j].currentMp = activeBattlers[i].currentMp;
+        //        //    }
+        //        //}
+        //        //Destroy battlers so no weird cloning happens
+        //        Destroy(activeBattlers[i].gameObject);
+        //    }
+        //}
 
-        //find music from worldcontroller and fade in
-        int sceneMusic = FindObjectOfType<WorldController>().musicToPlay;
-        AudioManager.instance.PlayMusic(sceneMusic);
-        AudioManager.instance.music[sceneMusic].volume = 0f;
-        StartCoroutine(FadeAudio.StartFade(AudioManager.instance.music[sceneMusic], 3, 0.2f));
-        Player.instance.UnMuteWalk();
+        if (!playerDead)
+        {
+            //fade battlemusic out
+            StartCoroutine(FadeAudio.StartFade(AudioManager.instance.music[4], 3f, 0f));
+            //UIFade.instance.FadeToBlack();
+            yield return new WaitForSeconds(3f);
+            //UIFade.instance.FadeFromBlack();
+        }
 
         for (int i = 0; i < activeBattlers.Count; i++)
         {
@@ -356,28 +424,85 @@ public class BattleManager : MonoBehaviour
                     }
                 }
             }
-            //Destroy battlers so no weird cloning happens
-            Destroy(activeBattlers[i].gameObject);
+                Destroy(activeBattlers[i].gameObject);
         }
-        // battlescene unactive
-        BattleScene.SetActive(false);
-        //Reset battler list
-        activeBattlers.Clear();
+
         //reset turn to 0 = player
         currentTurn = 0;
         GameManager.instance.battleActive = false;
         battleActive = false;
         Camera.SetActive(false);
         Player.instance.OnRunSpeed();
-        EnemyDefeated ef = new EnemyDefeated();
+        EnemyDefeated ef = obj.AddComponent<EnemyDefeated>();
         ef.DetermineDefeated(npcName);
 
-    }
-    public IEnumerator GameOverCo() // not in use yet
-    {
-        battleActive = false;
-        yield return new WaitForSeconds(1f);
+        // battlescene unactive
+        BattleScene.SetActive(false);
+        //Reset battler list
+        activeBattlers.Clear();
 
+        //find music from worldcontroller
+        int sceneMusic = FindObjectOfType<WorldController>().musicToPlay;
+        AudioManager.instance.music[sceneMusic].volume = 0f;
+        AudioManager.instance.PlayMusic(sceneMusic);
+        //if (!playerDead)
+        //{
+        //fade in music
+        StartCoroutine(FadeAudio.StartFade(AudioManager.instance.music[sceneMusic], 3, 0.2f));
+        //}
+        Player.instance.UnMuteWalk();
+    }
+    public IEnumerator EndBattleCo2()
+    {
+        //this makes the sound fade twice when going back to scene - which is not desireable
+        //yield return new WaitForSeconds(1f);
+
+        uiButtonsHolder.SetActive(false);
+        targetMenu.SetActive(false);
+        magicMenu.SetActive(false);
+        battleActive = false;
+        if (!playerDead)
+        {
+            AudioManager.instance.music[4].volume = 0f;
+            //StartCoroutine(FadeAudio.StartFade(AudioManager.instance.music[4], 1f, 0f));
+            yield return null;
+        }
+
+        for (int i = 0; i < activeBattlers.Count; i++)
+        {
+            if (activeBattlers[i].isPlayer)
+            {
+                for (int j = 0; j < GameManager.instance.playerStats.Length; j++)
+                {
+                    if (activeBattlers[i].charName == GameManager.instance.playerStats[i].charName)
+                    {
+                        GameManager.instance.playerStats[j].currentHp = activeBattlers[i].currentHp;
+                        GameManager.instance.playerStats[j].currentMp = activeBattlers[i].currentMp;
+                    }
+                }
+            }
+            Destroy(activeBattlers[i].gameObject);
+        }
+        currentTurn = 0;
+        GameManager.instance.battleActive = false;
+        battleActive = false;
+        Camera.SetActive(false);
+        Player.instance.OnRunSpeed();
+        EnemyDefeated ef = obj.AddComponent<EnemyDefeated>();
+        ef.DetermineDefeated(npcName);
+
+        // battlescene unactive
+        BattleScene.SetActive(false);
+        //Reset battler list
+        activeBattlers.Clear();
+
+        //find music from worldcontroller
+        int sceneMusic = FindObjectOfType<WorldController>().musicToPlay;
+        AudioManager.instance.music[sceneMusic].volume = 0f;
+        AudioManager.instance.PlayMusic(sceneMusic);
+        StartCoroutine(FadeAudio.StartFade(AudioManager.instance.music[sceneMusic], 3, 0.2f));
+        //}
+        Player.instance.UnMuteWalk();
     }
 
 }

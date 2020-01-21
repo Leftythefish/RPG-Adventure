@@ -11,6 +11,8 @@ public class Restart : MonoBehaviour
     //{
     //}
 
+    public GameObject obj;
+
     // Update is called once per frame
     void Update()
     {
@@ -36,35 +38,38 @@ public class Restart : MonoBehaviour
 
     public void RestartGame()
     {
+        obj = this.gameObject;
+
         Inventory.instance.GameOver();
         Player.instance.GameOver();
 
-        Instantiation i = new Instantiation();
+        Instantiation i = obj.AddComponent<Instantiation>();
         i.GameOver();
 
         TextBoxManager tbm = FindObjectOfType<TextBoxManager>();
         tbm.openSuccesful = false;
         tbm.ship = false;
 
-        HomeInstantiation hi = new HomeInstantiation();
+        HomeInstantiation hi = obj.AddComponent<HomeInstantiation>();
         hi.GameOver();
 
-        ShedInstantiation si = new ShedInstantiation();
+        ShedInstantiation si = obj.AddComponent<ShedInstantiation>();
         si.GameOver();
 
-        TownInstantiation ti = new TownInstantiation();
+        TownInstantiation ti = obj.AddComponent<TownInstantiation>();
         ti.GameOver();
 
-        BeachInstantiation bi = new BeachInstantiation();
-        bi.GameOver();
+        //no values to change for now
+        //BeachInstantiation bi = obj.AddComponent<BeachInstantiation>();
+        //bi.GameOver();
 
-        Forest1Instantiation f1i = new Forest1Instantiation();
+        Forest1Instantiation f1i = obj.AddComponent<Forest1Instantiation>();
         f1i.GameOver();
 
-        Forest2Instantiation f2i = new Forest2Instantiation();
+        Forest2Instantiation f2i = obj.AddComponent<Forest2Instantiation>();
         f2i.GameOver();
 
-        CaveInstantiation ci = new CaveInstantiation();
+        CaveInstantiation ci = obj.AddComponent<CaveInstantiation>();
         ci.GameOver();
 
 

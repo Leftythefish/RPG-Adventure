@@ -123,6 +123,7 @@
     <Compile Include="Assets\ShedInstantiation.cs" />
     <Compile Include="Assets\TownInstantiation.cs" />
     <Compile Include="Assets\UIMaster.cs" />
+    <Compile Include="Assets\VolumeButton.cs" />
     <None Include="Assets\Text\FishingRodText.txt" />
     <None Include="Assets\TextBox\Text\lockText.txt" />
     <None Include="Assets\Text\Beginning.txt" />
@@ -135,6 +136,7 @@
     <None Include="Assets\Text\RoadSigns.txt" />
     <None Include="Assets\Scripts\LayerGuide.txt" />
     <None Include="Assets\Text\warnings 1.txt" />
+    <None Include="Assets\Text\inventorytext.txt" />
     <None Include="Assets\Text\dialog 1.txt" />
     <None Include="Assets\Text\playerdialogueptions1.txt" />
     <None Include="Assets\Text\chestText.txt" />

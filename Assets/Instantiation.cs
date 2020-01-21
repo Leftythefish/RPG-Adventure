@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class Instantiation : MonoBehaviour
@@ -48,41 +49,46 @@ public class Instantiation : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (warningShown == false)
+        if (SceneController.currentScene == "Starting_area")
         {
-            Instantiate(gameStartInfo, new Vector3(startX, startY), Quaternion.identity);
-            warningShown = true;
-        }
-        if (key != null && keyPicked == false)
-        {
-            Instantiate(key, new Vector3(keyX, keyY), Quaternion.identity);
-        }
-        if (healthPotion != null && healthPicked == false)
-        {
-            Instantiate(healthPotion, new Vector3(healthX, healthY), Quaternion.identity);
-        }
-        if (speedPotion != null && speedPicked == false)
-        {
-            Instantiate(speedPotion, new Vector3(speedX, speedY), Quaternion.identity);
-        }
-        if (poisonPotion != null && poisonPicked == false)
-        {
-            Instantiate(poisonPotion, new Vector3(poisonX, poisonY), Quaternion.identity);
-        }
-        if (houseDoorOpened == false)
-        {
-            Instantiate(houseDoorCollider, new Vector3(houseDoorCollX, houseDoorCollY), Quaternion.identity);
-        }
-        if (houseDoorOpened == true)
-        {
-            Instantiate(houseDoorPortal, new Vector3(houseDoorPortalX, houseDoorPortalY), Quaternion.identity);
-        }
+            if (warningShown == false && gameStartInfo != null)
+            {
+                Instantiate(gameStartInfo, new Vector3(startX, startY), Quaternion.identity);
+                warningShown = true;
+            }
+            if (key != null && keyPicked == false)
+            {
+                Instantiate(key, new Vector3(keyX, keyY), Quaternion.identity);
+            }
+            if (healthPotion != null && healthPicked == false)
+            {
+                Instantiate(healthPotion, new Vector3(healthX, healthY), Quaternion.identity);
+            }
+            if (speedPotion != null && speedPicked == false)
+            {
+                Instantiate(speedPotion, new Vector3(speedX, speedY), Quaternion.identity);
+            }
+            if (poisonPotion != null && poisonPicked == false)
+            {
+                Instantiate(poisonPotion, new Vector3(poisonX, poisonY), Quaternion.identity);
+            }
+            if (houseDoorOpened == false && houseDoorCollider != null)
+            {
+                Instantiate(houseDoorCollider, new Vector3(houseDoorCollX, houseDoorCollY), Quaternion.identity);
+            }
+            if (houseDoorOpened == true)
+            {
+                Instantiate(houseDoorPortal, new Vector3(houseDoorPortalX, houseDoorPortalY), Quaternion.identity);
+            }
+            if (shedDoorCollider != null)
+            {
+                Instantiate(shedDoorCollider, new Vector3(shedDoorX, shedDoorY), Quaternion.identity);
+            }
 
-        Instantiate(shedDoorCollider, new Vector3(shedDoorX, shedDoorY), Quaternion.identity);
-
-        if (ogredefeated == false)
-        {
-            Instantiate(ogre, new Vector3(ogreX, ogreY, ogreZ), Quaternion.identity);
+            if (ogredefeated == false && ogre != null)
+            {
+                Instantiate(ogre, new Vector3(ogreX, ogreY, ogreZ), Quaternion.identity);
+            }
         }
     }
 

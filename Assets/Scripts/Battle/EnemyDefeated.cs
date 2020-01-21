@@ -50,9 +50,9 @@ public class EnemyDefeated : MonoBehaviour
                     case "Ogre3":
                         TownInstantiation.ogre3defeated = true;
                         break;
-                    case "Ogre4":
-                        TownInstantiation.ogre4defeated = true;
-                        break;
+                    //case "Ogre4":
+                    //    TownInstantiation.ogre4defeated = true;
+                    //    break;
                     case "Ogre5":
                         TownInstantiation.ogre5defeated = true;
                         break;

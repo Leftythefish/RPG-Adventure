@@ -47,10 +47,7 @@ public class CharStats : MonoBehaviour
     #region Xp calculator.
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            AddExp(1000);
-        }
+        
     }
     public void AddExp(int expToAdd)
     {

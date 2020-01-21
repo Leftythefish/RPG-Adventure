@@ -41,6 +41,12 @@ public class TextBoxManager : MonoBehaviour
 
     public bool ship = false;
 
+    public bool fishing = false;
+    public float fishingTimer;
+
+    public FishingPlace fp;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -82,10 +88,24 @@ public class TextBoxManager : MonoBehaviour
             return;
         }
 
-
         if (npc == null || npc.hasInteraction != true) //basic routine if there's no npc or npc is not tagged with interaction
         {
             theText.text = textLines[currentLine];
+       
+            if (fishing)
+            {
+                if (fishingTimer > 0f)
+                {
+                    fishingTimer -= Time.deltaTime;
+                    return;
+                }
+                else
+                {
+                    fishing = false;
+                    fp = FindObjectOfType<FishingPlace>();
+                    fp.Catch();
+                }
+            }
 
             if (!openingLock && Input.anyKeyDown)
             {
@@ -94,14 +114,16 @@ public class TextBoxManager : MonoBehaviour
 
             if (openingLock && Input.anyKeyDown)
             {
-                currentLine = 4;
-                endAtLine = 4;
+                //currentLine = 4;
+                //endAtLine = 4;
                 openingLock = false;
 
                 item.RemoveFromInventory();
 
                 openSuccesful = true;
             }
+
+
 
             if (currentLine > endAtLine)
             {
@@ -170,13 +192,15 @@ public class TextBoxManager : MonoBehaviour
 
     public void DisableTextBox()
     {
+        theText.text = " ";
+
         textBox.SetActive(false);
         isActive = false;
         npc = null;
 
         if (Portal.hasAllCrystals == true)
         {
-            Restart r = new Restart();
+            Restart r = FindObjectOfType<Restart>();
             r.Win();
             Player.instance.OnRunSpeed();
             Player.instance.UnMuteWalk();
@@ -184,7 +208,7 @@ public class TextBoxManager : MonoBehaviour
         }
         else if (ship)
         {
-            Restart r = new Restart();
+            Restart r = FindObjectOfType<Restart>();
             r.Win();
             Player.instance.OnRunSpeed();
             Player.instance.UnMuteWalk();

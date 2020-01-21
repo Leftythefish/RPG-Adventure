@@ -14,7 +14,6 @@ public class Inventory : MonoBehaviour
     {
         if (instance != null)
         {
-            Debug.LogWarning("More than one instance of Inventory found!");
             Destroy(this.gameObject);
 
             return;
@@ -29,21 +28,21 @@ public class Inventory : MonoBehaviour
     public OnItemChanged onItemChangedCallback;
 
     public static List<Item> items = new List<Item>();
-
     public int space = 20;
 
-    public void OnDestroy()
-    {
-        Debug.Log("Inventory was destroyed");
-    }
+    //public TextAsset inventoryText;
+    //public int startLine;
+    //public int endLine;
+    //public TextBoxManager theTextBox;
 
     public bool Add(Item item)
     {
         if (!item.isDefaultItem)
         {
-            if (items.Count >= space)
+            //onItemChangedCallback.Invoke();
+
+            if (items.Count() >= space)
             {
-                Debug.Log("Not enough room.");
                 return false;
             }
 
@@ -84,10 +83,10 @@ public class Inventory : MonoBehaviour
     public bool SearchForFishingRod()
     {
         Item rod = (from i in items
-                  where i.name == "Fishing Rod"
-                  select i).FirstOrDefault();
+                    where i.name == "Fishing Rod"
+                    select i).FirstOrDefault();
 
-        if (rod!=null)
+        if (rod != null)
         {
             return true;
         }

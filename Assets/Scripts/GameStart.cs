@@ -33,9 +33,13 @@ public class GameStart : MonoBehaviour
 
     private bool textShown = false;
 
+    public GameObject obj;
+
     // Start is called before the first frame update
     void Start()
     {
+        obj = this.gameObject;
+
         if (SceneController.currentScene == "Starting_area")
         {
             ShowText();
@@ -67,7 +71,7 @@ public class GameStart : MonoBehaviour
             }
             if (SceneController.currentScene == "Prelude" && endTimer <= 0f)
             {
-                Restart r = new Restart();
+                Restart r = obj.AddComponent<Restart>();
                 r.RestartGame();
                 sceneController = GameObject.FindGameObjectWithTag("GameController").GetComponent<SceneController>();
                 sceneController.LoadScene("Starting_area");

@@ -15,8 +15,7 @@ public class Item : ScriptableObject
     public virtual void Use()
     {
         //Use item
-        //Something might happen
-        Debug.Log("Using " + name);
+        //is overwritten by inheriting item class, check references.
     }
 
     public void RemoveFromInventory()

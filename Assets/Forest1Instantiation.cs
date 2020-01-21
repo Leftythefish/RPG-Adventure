@@ -41,20 +41,23 @@ public class Forest1Instantiation : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (enterWarning != null && warningShownCave == false)
+        if (SceneController.currentScene == "Theforest_01")
         {
-            Instantiate(enterWarning, new Vector3(warningX, warningY), Quaternion.identity);
-            //warningShown = true;
-        }
+            if (enterWarning != null && warningShownCave == false)
+            {
+                Instantiate(enterWarning, new Vector3(warningX, warningY), Quaternion.identity);
+                //warningShown = true;
+            }
 
-        //if (ogredefeated == false)
-        //{
-        //    Instantiate(ogre, new Vector3(ogreX, ogreY, ogreZ), Quaternion.identity);
-        //}
-        //if (crystal != null && crystalPicked == false)
-        //{
-        //    Instantiate(crystal, new Vector3(crystalX, crystalY, 758.93f), Quaternion.identity);
-        //}
+            //if (ogredefeated == false)
+            //{
+            //    Instantiate(ogre, new Vector3(ogreX, ogreY, ogreZ), Quaternion.identity);
+            //}
+            //if (crystal != null && crystalPicked == false)
+            //{
+            //    Instantiate(crystal, new Vector3(crystalX, crystalY, 758.93f), Quaternion.identity);
+            //}
+        }
     }
 
     public void GameOver()

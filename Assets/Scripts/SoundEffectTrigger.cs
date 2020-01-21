@@ -20,16 +20,17 @@ public class SoundEffectTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
         if (collision.CompareTag("Player"))
         {
-            audioManager.PlaySFX(soundToPlay);
-            if (destroyWhenActivated)
+            if (gameObject != null && audioManager != null)
             {
-                Destroy(gameObject);
+                audioManager.PlaySFX(soundToPlay);
+                
+                if (destroyWhenActivated)
+                {
+                    Destroy(gameObject);
+                }
             }
         }
     }
-
-
 }

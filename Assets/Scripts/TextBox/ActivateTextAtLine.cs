@@ -24,6 +24,12 @@ public class ActivateTextAtLine : MonoBehaviour
 
     public bool destroyWhenActivated;
 
+    private SceneController sceneController;
+
+    public GameObject houseDoorPortal;
+    public float houseDoorPortalX;
+    public float houseDoorPortalY;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -74,6 +80,14 @@ public class ActivateTextAtLine : MonoBehaviour
         {
             isLocked = false;
             Instantiation.houseDoorOpened = true;
+
+            if (houseDoorPortal != null)
+            {
+                Instantiate(houseDoorPortal, new Vector3(houseDoorPortalX, houseDoorPortalY), Quaternion.identity);
+            }
+
+            //sceneController = GameObject.FindGameObjectWithTag("GameController").GetComponent<SceneController>();
+            //sceneController.LoadScene("Home");
         }
     }
 
@@ -89,12 +103,12 @@ public class ActivateTextAtLine : MonoBehaviour
                 //answer is different if relationship with friend is good or bad. otherwise default answer.
                 int status = RelationShips.GetRelationShip(theTextBox.npc.friendsName);
 
-                if (status <1)
+                if (status < 1)
                 {
                     startLine = theTextBox.npc.angryLine;
                     endLine = theTextBox.npc.angryLine;
                 }
-                else if (status >1)
+                else if (status > 1)
                 {
                     startLine = theTextBox.npc.happyLine;
                     endLine = theTextBox.npc.happyLine;

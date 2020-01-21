@@ -8,13 +8,18 @@ public class ItemPickup : Interactable
     public Item item;
     bool hasInteracted = false;
     public bool wasPickedUp;
+
+    public TextAsset inventoryText;
+    public int startLine;
+    public int endLine;
+    public TextBoxManager theTextBox;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //wasPickedUp = false;
 
         if (collision.CompareTag("Player") && !hasInteracted)
         {
-            hasInteracted = true;
+            //hasInteracted = true;
 
             Interact();
             //Obstacle o = collision.GetComponent<Obstacle>();
@@ -38,11 +43,23 @@ public class ItemPickup : Interactable
 
     void PickUp()
     {
-        Debug.Log("Picking up " + item.name);
 
         wasPickedUp = Inventory.instance.Add(item);
+
+        if (!wasPickedUp)
+        {
+            theTextBox = FindObjectOfType<TextBoxManager>();
+
+            theTextBox.currentLine = startLine;
+            theTextBox.endAtLine = endLine;
+            theTextBox.ReloadScript(inventoryText);
+            theTextBox.EnableTextBox();
+        }
+
         if (wasPickedUp)
         {
+            hasInteracted = true;
+
             switch (SceneManager.GetActiveScene().name)
             {
                 case "Starting_area":

@@ -27,7 +27,7 @@ public class Stat : MonoBehaviour
 
         if (instance != null)
         {
-            Debug.LogWarning("More than one instance of Stat found!");
+            //Debug.LogWarning("More than one instance of Stat found!");
             Destroy(instance);
             Destroy(instance.gameObject);
             //instance = this;

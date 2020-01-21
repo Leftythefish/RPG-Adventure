@@ -36,29 +36,32 @@ public class Forest2Instantiation : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //if (key != null && keyPicked == false)
-        //{
-        //    Instantiate(key, new Vector3(keyX, keyY), Quaternion.identity);
-        //}
-        //if (healthPotion != null && healthPicked == false)
-        //{
-        //    Instantiate(healthPotion, new Vector3(healthX, healthY), Quaternion.identity);
-        //}
-        //if (speedPotion != null && speedPicked == false)
-        //{
-        //    Instantiate(speedPotion, new Vector3(speedX, speedY), Quaternion.identity);
-        //}
-        //if (poisonPotion != null && poisonPicked == false)
-        //{
-        //    Instantiate(poisonPotion, new Vector3(poisonX, poisonY), Quaternion.identity);
-        //}
-        //if (ogredefeated == false)
-        //{
-        //    Instantiate(ogre, new Vector3(ogreX, ogreY, ogreZ), Quaternion.identity);
-        //}
-        if (crystal != null && crystalPicked == false)
+        if (SceneController.currentScene == "Theforest_02")
         {
-            Instantiate(crystal, new Vector3(crystalX, crystalY, 758.93f), Quaternion.identity);
+            //if (key != null && keyPicked == false)
+            //{
+            //    Instantiate(key, new Vector3(keyX, keyY), Quaternion.identity);
+            //}
+            //if (healthPotion != null && healthPicked == false)
+            //{
+            //    Instantiate(healthPotion, new Vector3(healthX, healthY), Quaternion.identity);
+            //}
+            //if (speedPotion != null && speedPicked == false)
+            //{
+            //    Instantiate(speedPotion, new Vector3(speedX, speedY), Quaternion.identity);
+            //}
+            //if (poisonPotion != null && poisonPicked == false)
+            //{
+            //    Instantiate(poisonPotion, new Vector3(poisonX, poisonY), Quaternion.identity);
+            //}
+            //if (ogredefeated == false)
+            //{
+            //    Instantiate(ogre, new Vector3(ogreX, ogreY, ogreZ), Quaternion.identity);
+            //}
+            if (crystal != null && crystalPicked == false)
+            {
+                Instantiate(crystal, new Vector3(crystalX, crystalY, 758.93f), Quaternion.identity);
+            }
         }
     }
 

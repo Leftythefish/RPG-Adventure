@@ -28,13 +28,16 @@ public class Player : MonoBehaviour
 
     public static int timesStarted;
 
+    GameObject restart;
+    GameObject battleManager;
+
     void Start()
     {
         timesStarted++;
 
         if (instance != null)
         {
-            Debug.LogWarning("More than one instance of Player found!");
+            //Debug.LogWarning("More than one instance of Player found!");
 
             currentHealth = instance.currentHealth;
             maxHealth = instance.maxHealth;
@@ -77,12 +80,12 @@ public class Player : MonoBehaviour
         footsteps = gameObject.GetComponent<AudioSource>();
         var player = GameObject.Find("Player1");
         var playerPos = player.transform.position;
-        Debug.Log(playerPos);
-        Stat.instance.maxValue = maxHealth;
-        Stat.instance.currentValue = currentHealth;
 
-        Stat.instance.maxValue = maxHealth;
-        Stat.instance.currentValue = currentHealth;
+        if (Stat.instance != null)
+        {
+            Stat.instance.maxValue = maxHealth;
+            Stat.instance.currentValue = currentHealth;
+        }
     }
 
     // Update is called once per frame
@@ -98,14 +101,16 @@ public class Player : MonoBehaviour
         }
         if (currentHealth <= 0)
         {
-            Restart r = new Restart();
+            DeathSound();
+
+            if (BattleManager.instance.battleActive)
+            {
+                return;
+            }
+            restart = GameObject.Find("Restart");
+            Restart r = restart.AddComponent<Restart>();
             r.Death();
         }
-
-        //if (!canMove)
-        //{
-        //    return;
-        //}
 
         if (speedBoost)
         {
@@ -180,10 +185,14 @@ public class Player : MonoBehaviour
     }
     public void SpeedBoost(float speed, float time)
     {
+        if (!speedBoost)
+        {
+            runSpeed += speed;
+        }
+
         speedBoost = true;
-        effectTime = time;
+        effectTime += time;
         speedEffect = speed;
-        runSpeed += speed;
     }
     public void OffRunSpeed()
     {
@@ -214,5 +223,11 @@ public class Player : MonoBehaviour
     public void UnMuteWalk() // not in use atm
     {
         footsteps.mute = false;
+    }
+
+    public void DeathSound()
+    {
+        AudioManager audioManager = FindObjectOfType<AudioManager>();
+        audioManager.PlaySFX(22);
     }
 }
